@@ -14,12 +14,13 @@
 #include <process.h> 
 #include <mysql.h>
 
-void testMysqlConnect();
+void testMysqlConnect(); // test connect to mysql server and do command
+void testByteSwap(int x);     // test swap all bytes of int number (reverse its bytes)
 
 int main(int argc, char* argv[]) {
    
-    testMysqlConnect();
-
+    //testMysqlConnect();
+    testByteSwap(0x12345678);
 
     return 0;
 }
@@ -60,4 +61,12 @@ void testMysqlConnect()
     /* close connection */
     mysql_free_result(res);
     mysql_close(conn);
+}
+
+void testByteSwap(int x)
+{
+    printf("\ndata before swapping : %08X", x);
+    x = ((((x) & 0xff000000u) >> 24) | (((x) & 0x00ff0000u) >> 8)
+        | (((x) & 0x0000ff00u) << 8) | (((x) & 0x000000ffu) << 24));
+    printf("\ndata after swapping  : %08X", x);
 }
