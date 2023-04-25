@@ -50,3 +50,9 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+/.vs/C
+/VisualC_001/x64
+/VisualC_001/VisualC_001.vcxproj.user
+/VisualC_001/VisualC_001.vcxproj.filters
+/VisualC_001/VisualC_001.vcxproj
+/C.sln
