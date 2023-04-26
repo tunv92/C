@@ -12,15 +12,21 @@
 #include <limits.h> 
 #include <time.h>
 #include <process.h> 
-#include <mysql.h>
+#include <mysql.h> 
 
 void testMysqlConnect(); // test connect to mysql server and do command
-void testByteSwap(int x);     // test swap all bytes of int number (reverse its bytes)
+void testByteSwapInt32(int x);     // test swap all bytes of int number (reverse its bytes)
+void testThread();  
+void thread1();
+void thread2();
 
 int main(int argc, char* argv[]) {
    
     //testMysqlConnect();
-    testByteSwap(0x12345678);
+    //testByteSwapInt32(0x12345678);
+    testThread();
+
+
 
     return 0;
 }
@@ -63,10 +69,41 @@ void testMysqlConnect()
     mysql_close(conn);
 }
 
-void testByteSwap(int x)
+void testByteSwapInt32(int x)
 {
     printf("\ndata before swapping : %08X", x);
     x = ((((x) & 0xff000000u) >> 24) | (((x) & 0x00ff0000u) >> 8)
         | (((x) & 0x0000ff00u) << 8) | (((x) & 0x000000ffu) << 24));
     printf("\ndata after swapping  : %08X", x);
+}
+
+void testThread()
+{
+
+    HANDLE myhandle[2];
+
+    myhandle[0] = (HANDLE)_beginthread(thread1, 0, NULL);
+    myhandle[1] = (HANDLE)_beginthread(thread2, 0, NULL);
+
+    WaitForSingleObject(myhandle[0], INFINITE);
+    WaitForSingleObject(myhandle[1], INFINITE); 
+    //CloseHandle(myhandle[0]);
+    //FindClose(myhandle[1]); 
+
+}
+
+void thread1()
+{
+    for (size_t i = 0; i < 1000; i++)
+    {
+        printf("\nthread111: %d", i);
+    }
+}
+
+void thread2()
+{
+    for (size_t i = 0; i < 1000; i++)
+    {
+        printf("\nthread222 %d", i);
+    }
 }
